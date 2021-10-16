@@ -1,9 +1,11 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ReplyIcon } from "../../assets/reply.svg";
-import { Button } from "../button/button";
+import { Button, Emphasis } from "../button/button";
 import { Reply } from "../reply/reply";
 import { UserProfile } from "../user-profile/user-profile";
+
+export interface CommentProps {}
 
 const CommentContainer = styled.div`
   display: grid;
@@ -23,11 +25,11 @@ const HeadlineContainer = styled.div`
 const PublishDate = styled.span`
   font-size: ${({ theme }) => theme.fontSize["text-sm"]};
   font-weight: ${({ theme }) => theme.fontWeight.fontMedium};
-  color: ${({ theme }) => theme.colors.grey};
+  color: ${({ theme }) => theme.colors.grey300};
 `;
 
 const CommentText = styled.p`
-  color: ${({ theme }) => theme.colors.darkBlue};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const ActionsContainer = styled.div`
@@ -36,8 +38,6 @@ const ActionsContainer = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
   align-items: center;
 `;
-
-export interface CommentProps {}
 
 export const Comment: FC<CommentProps> = (props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +64,11 @@ export const Comment: FC<CommentProps> = (props): JSX.Element => {
           scrambled it to make a type specimen book.
         </CommentText>
         <ActionsContainer>
-          <Button icon={<ReplyIcon />} onClick={handleToggleReply}>
+          <Button
+            emphasis={Emphasis.primary}
+            icon={<ReplyIcon />}
+            onClick={handleToggleReply}
+          >
             Reply
           </Button>
         </ActionsContainer>

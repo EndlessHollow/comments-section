@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 
+export interface UserProfileProps {}
+
 const pictureSize = "3rem;";
 
 const UserProfileContainer = styled.div`
@@ -25,10 +27,8 @@ const UserPhoto = styled.img`
 const Username = styled.span`
   font-size: ${({ theme }) => theme.fontSize["text-base"]};
   font-weight: ${({ theme }) => theme.fontWeight.fontMedium};
-  color: ${({ theme }) => theme.colors.darkBlue};
+  color: ${({ theme }) => theme.colors.black};
 `;
-
-export interface UserProfileProps {}
 
 export const UserProfile: FC<UserProfileProps> = (props): JSX.Element => {
   return (

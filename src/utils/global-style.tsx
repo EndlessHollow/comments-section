@@ -56,10 +56,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
-*&:focus-visible {
-  outline-color: hsl(215, 41%, 21%)
-}
 `
 
 export const GlobalStyle = createGlobalStyle`${reset}`;

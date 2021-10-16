@@ -1,32 +1,6 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
 
-const TextAreaContainer = styled.div`
-  position: relative;
-`;
-
-const StyledTextArea = styled.textarea`
-  resize: none;
-  padding: ${({ theme }) => theme.spacing[4]};
-  width: 100%;
-  font-size: ${({ theme }) => theme.fontSize["text-base"]};
-  border: 2px solid ${({ theme }) => theme.colors.grey};
-  box-sizing: border-box;
-  border-radius: 0.25rem;
-
-  &::-webkit-input-placeholder {
-    color: ${({ theme }) => theme.colors.darkBlue};
-  }
-`;
-
-const CharacterCounter = styled.span`
-  position: absolute;
-  bottom: ${({ theme }) => theme.spacing[4]};
-  right: ${({ theme }) => theme.spacing[4]};
-  font-size: ${({ theme }) => theme.fontSize["text-sm"]};
-  color: ${({ theme }) => theme.colors.darkBlue};
-`;
-
 export interface TextAreaProps {
   cols?: number;
   rows?: number;
@@ -36,6 +10,32 @@ export interface TextAreaProps {
   placeholder?: string;
 }
 
+const TextAreaContainer = styled.div`
+  position: relative;
+`;
+
+const StyledTextArea = styled.textarea`
+  resize: none;
+  padding: ${({ theme }) => theme.spacing[4]};
+  width: 100%;
+  font-size: ${({ theme }) => theme.fontSize["text-base"]};
+  border: 2px solid ${({ theme }) => theme.colors.grey200};
+  box-sizing: border-box;
+  border-radius: 0.25rem;
+
+  &::-webkit-input-placeholder {
+    color: ${({ theme }) => theme.colors.grey300};
+  }
+`;
+
+const CharacterCounter = styled.span`
+  position: absolute;
+  bottom: ${({ theme }) => theme.spacing[4]};
+  right: ${({ theme }) => theme.spacing[4]};
+  font-size: ${({ theme }) => theme.fontSize["text-sm"]};
+  color: ${({ theme }) => theme.colors.grey300};
+`;
+
 export const TextArea: FC<TextAreaProps> = (props): JSX.Element => {
   const {
     cols,
@@ -43,7 +43,7 @@ export const TextArea: FC<TextAreaProps> = (props): JSX.Element => {
     required,
     minLength,
     maxLength,
-    placeholder = "what are your thoughts",
+    placeholder = "What are your thoughts...",
   } = props;
   const [textAreaValue, setTextAreaValue] = useState<string | undefined>();
   const [charCount, setCharCount] = useState(`0 | ${maxLength}`);
