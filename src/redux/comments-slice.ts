@@ -1,7 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface AddCommentData {
+  commentId: number;
+  commentData: CommentsData;
+}
+
 import { CommentsData } from "../types/types";
 
 const initialState: CommentsData[] = [];
+
+let result: CommentsData;
+
+const getCommentById = (state: CommentsData[], id: number): void => {
+  for (const comment of state) {
+    if (comment.id === id) {
+      result = comment;
+    } else {
+      if (comment.comments.length) {
+        getCommentById(comment.comments, id);
+      }
+    }
+  }
+};
 
 const commentsSlice = createSlice({
   name: "comments",
@@ -9,6 +29,11 @@ const commentsSlice = createSlice({
   reducers: {
     receiveComments: (_, action: PayloadAction<CommentsData[]>) =>
       action.payload,
+    addComment: (state, action: PayloadAction<AddCommentData>) => {
+      getCommentById(state, action.payload.commentId);
+
+      result.comments.push(action.payload.commentData);
+    },
   },
 });
 
