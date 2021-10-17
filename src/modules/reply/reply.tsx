@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { ReactComponent as CancelIcon } from "../../assets/cancel.svg";
 import { ReactComponent as SendIcon } from "../../assets/send.svg";
+import { screens } from "../../utils/screens";
 import { Button, Emphasis } from "../button/button";
 import { TextArea } from "./text-area";
 
@@ -16,7 +17,7 @@ export interface ReplyProps {
 }
 
 const ReplyContainer = styled.div`
-  padding: ${({ theme }) => `${theme.spacing[3]} ${theme.spacing[6]}`};
+  padding: ${({ theme }) => `${theme.spacing[3]} 0`};
   display: grid;
   row-gap: ${({ theme }) => theme.spacing[4]};
   background-color: ${({ theme }) => theme.colors.white};
@@ -26,9 +27,12 @@ const ReplyContainer = styled.div`
 const ControlsPanel = styled.div`
   display: flex;
   flex-flow: row wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: ${({ theme }) => theme.spacing[4]};
   align-items: center;
+  @media (min-width: ${screens.sm}) {
+    justify-content: flex-end;
+  }
 `;
 
 export const Reply: FC<ReplyProps> = (props): JSX.Element => {

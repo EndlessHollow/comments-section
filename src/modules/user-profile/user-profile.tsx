@@ -1,7 +1,10 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 
-export interface UserProfileProps {}
+export interface UserProfileProps {
+  username: string;
+  avatar: string;
+}
 
 const pictureSize = "3rem;";
 
@@ -31,16 +34,17 @@ const Username = styled.span`
 `;
 
 export const UserProfile: FC<UserProfileProps> = (props): JSX.Element => {
+  const { username, avatar } = props;
   return (
     <UserProfileContainer>
       <UserPhotoContainer>
         <UserPhoto
-          src={"https://source.unsplash.com/mEZ3PoFGs_k/443×664"}
-          alt={"Profile Picture - Estella Horton"}
+          src={avatar}
+          alt={`Profile Picture - ${username}`}
           loading="lazy"
         />
       </UserPhotoContainer>
-      <Username>Estella Horton</Username>
+      <Username>{username}</Username>
     </UserProfileContainer>
   );
 };
