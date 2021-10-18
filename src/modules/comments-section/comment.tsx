@@ -1,13 +1,33 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ReplyIcon } from "../../assets/reply.svg";
+import { CommentsData, UserData } from "../../types/types";
+import { screens } from "../../utils/screens";
 import { Button, Emphasis } from "../button/button";
 import { Reply } from "../reply/reply";
 import { UserProfile } from "../user-profile/user-profile";
+import { assignUserToComment } from "./assign-user-to-comment";
 
-export interface CommentProps {}
+export interface CommentBlockProps {
+  users: UserData[];
+  comment: CommentsData;
+}
 
-const CommentContainer = styled.div`
+export interface CommentProps {
+  users: UserData[];
+  comment: CommentsData;
+  mainComment?: boolean;
+}
+
+const CommentContainer = styled.div<{ mainComment: boolean | undefined }>`
+  display: grid;
+  row-gap: ${({ theme }) => theme.spacing[4]};
+  margin-left: ${({ theme, mainComment }) =>
+    mainComment ? undefined : theme.spacing[8]};
+  background-color: ${({ theme }) => theme.colors.grey100};
+`;
+
+const CommentWrapper = styled.div`
   display: grid;
   row-gap: ${({ theme }) => theme.spacing[4]};
   padding: ${({ theme }) =>
@@ -18,14 +38,24 @@ const CommentContainer = styled.div`
 
 const HeadlineContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+
+  @media (min-width: ${screens.sm}) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const PublishDate = styled.span`
+  margin-top: ${({ theme }) => theme.spacing[4]};
   font-size: ${({ theme }) => theme.fontSize["text-sm"]};
   font-weight: ${({ theme }) => theme.fontWeight.fontMedium};
   color: ${({ theme }) => theme.colors.grey300};
+
+  @media (min-width: ${screens.sm}) {
+    margin-top: 0;
+  }
 `;
 
 const CommentText = styled.p`
@@ -40,7 +70,35 @@ const ActionsContainer = styled.div`
 `;
 
 export const Comment: FC<CommentProps> = (props): JSX.Element => {
+  const { users, comment, mainComment } = props;
   const [isOpen, setIsOpen] = useState(false);
+  const user = assignUserToComment(users, comment.user);
+
+  const elapsedTime = (): string => {
+    var msCreatedAt = new Date(comment.createdAt).getTime();
+    var msNow = new Date().getTime();
+    return prettifyTime(msNow - msCreatedAt);
+  };
+
+  const prettifyTime = (ms: number): string => {
+    ms = Math.abs(ms);
+    var prettyTime;
+    if (ms >= 1000 * 60 * 60 * 24 * 365) {
+      prettyTime = Math.floor(ms / (1000 * 60 * 60 * 24 * 365)) + " years";
+    } else if (ms >= 1000 * 60 * 60 * 24 * 30) {
+      prettyTime = Math.floor(ms / (1000 * 60 * 60 * 24 * 30)) + " months";
+    } else if (ms >= 1000 * 60 * 60 * 24) {
+      prettyTime = Math.floor(ms / (1000 * 60 * 60 * 24)) + " days";
+    } else if (ms >= 1000 * 60 * 60) {
+      prettyTime = Math.floor(ms / (1000 * 60 * 60)) + " hours";
+    } else {
+      prettyTime = Math.floor(ms / (1000 * 60)) + " minutes";
+    }
+
+    return prettyTime.split(" ")[0] === "1"
+      ? prettyTime.slice(0, -1)
+      : prettyTime;
+  };
 
   const handleToggleReply = (): void => {
     setIsOpen(!isOpen);
@@ -51,18 +109,16 @@ export const Comment: FC<CommentProps> = (props): JSX.Element => {
   };
 
   return (
-    <>
-      <CommentContainer>
+    <CommentContainer mainComment={mainComment}>
+      <CommentWrapper>
         <HeadlineContainer>
-          <UserProfile />
-          <PublishDate>01/12/2021</PublishDate>
+          <UserProfile
+            username={user?.username ?? ""}
+            avatar={user?.avatar ?? ""}
+          />
+          <PublishDate>{elapsedTime()} ago</PublishDate>
         </HeadlineContainer>
-        <CommentText>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </CommentText>
+        <CommentText>{comment.text}</CommentText>
         <ActionsContainer>
           <Button
             emphasis={Emphasis.primary}
@@ -72,16 +128,24 @@ export const Comment: FC<CommentProps> = (props): JSX.Element => {
             Reply
           </Button>
         </ActionsContainer>
-      </CommentContainer>
-      {isOpen && (
-        <Reply
-          rows={8}
-          minLength={2}
-          maxLength={255}
-          handleCancel={handleCancel}
-        />
-      )}
-    </>
+
+        {isOpen && (
+          <Reply
+            commentId={comment.id}
+            rows={8}
+            required
+            minLength={2}
+            maxLength={255}
+            handleCancel={handleCancel}
+          />
+        )}
+      </CommentWrapper>
+      {comment.comments.length
+        ? comment.comments.map((comment) => (
+            <Comment key={comment.id} users={users} comment={comment} />
+          ))
+        : null}
+    </CommentContainer>
   );
 };
 
