@@ -14,8 +14,8 @@ export interface ReplyProps {
   commentId: string;
   cols?: number;
   rows?: number;
-  required?: boolean;
-  minLength?: number;
+  required: boolean;
+  minLength: number;
   maxLength?: number;
   placeholder?: string;
   handleCancel: () => void;
@@ -42,30 +42,35 @@ const ControlsPanel = styled.div`
 
 export const Reply: FC<ReplyProps> = (props): JSX.Element => {
   const { handleCancel, commentId, ...rest } = props;
-  const [textAreaValue, setTextAreaValue] = useState<string | undefined>();
+  const { minLength = 2 } = rest;
+  const [textAreaValue, setTextAreaValue] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(e.target.value);
+    if (e.target.value.length < minLength) {
+      setError(true);
+    } else {
+      setError(false);
+    }
   };
 
-  const handleReply = (value: string): void => {
-    if (value) {
+  const handleReply = (): void => {
+    if (textAreaValue.length >= minLength) {
       setTextAreaValue("");
       const newComment = {
         commentId,
         commentData: {
           id: uuidv4(),
           createdAt: new Date().toString(),
-          text: value ?? "",
+          text: textAreaValue,
           user: generateRandomNumber(0, 1).toString(),
           comments: [],
         },
       };
       dispatch(addComment(newComment));
-    } else {
-      //TODO: Make user know why it was not sended
-      return;
+      handleCancel();
     }
   };
 
@@ -73,6 +78,7 @@ export const Reply: FC<ReplyProps> = (props): JSX.Element => {
     <ReplyContainer>
       <TextArea
         {...rest}
+        error={error}
         value={textAreaValue}
         handleInputChange={handleInputChange}
       />
@@ -87,7 +93,7 @@ export const Reply: FC<ReplyProps> = (props): JSX.Element => {
         <Button
           emphasis={Emphasis.primary}
           icon={<SendIcon />}
-          onClick={() => handleReply(textAreaValue ?? "")}
+          onClick={handleReply}
         >
           Send
         </Button>

@@ -133,6 +133,7 @@ export const Comment: FC<CommentProps> = (props): JSX.Element => {
           <Reply
             commentId={comment.id}
             rows={8}
+            required
             minLength={2}
             maxLength={255}
             handleCancel={handleCancel}

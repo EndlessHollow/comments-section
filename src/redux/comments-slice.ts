@@ -31,7 +31,6 @@ const commentsSlice = createSlice({
       action.payload,
     addComment: (state, action: PayloadAction<AddCommentData>) => {
       getCommentById(state, action.payload.commentId);
-
       result.comments.push(action.payload.commentData);
     },
   },
