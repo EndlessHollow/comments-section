@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AddCommentData {
-  commentId: number;
+  commentId: string;
   commentData: CommentsData;
 }
 
@@ -11,7 +11,7 @@ const initialState: CommentsData[] = [];
 
 let result: CommentsData;
 
-const getCommentById = (state: CommentsData[], id: number): void => {
+const getCommentById = (state: CommentsData[], id: string): void => {
   for (const comment of state) {
     if (comment.id === id) {
       result = comment;
@@ -37,6 +37,6 @@ const commentsSlice = createSlice({
   },
 });
 
-export const { receiveComments } = commentsSlice.actions;
+export const { receiveComments, addComment } = commentsSlice.actions;
 
 export const commentsReducer = commentsSlice.reducer;

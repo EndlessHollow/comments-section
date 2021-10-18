@@ -7,7 +7,7 @@ export enum Emphasis {
 }
 
 export interface ButtonProps {
-  onClick: () => void;
+  onClick: () => void | ((value: string) => void);
   emphasis: Emphasis;
   icon?: ReactNode;
 }

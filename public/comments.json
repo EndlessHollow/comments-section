@@ -1,21 +1,21 @@
 [
   {
-    "id": 0,
+    "id": "0",
     "createdAt": "Sat January 1 2021 22:35:33 GMT+0100 (Central European Summer Time)",
     "text": "First Comment from user 0",
-    "user": 0,
+    "user": "0",
     "comments": [
       {
-        "id": 1,
+        "id": "1",
         "createdAt": "Sat January 1 2021 23:35:33 GMT+0100 (Central European Summer Time)",
         "text": "User 1 reply to user 0",
-        "user": 1,
+        "user": "1",
         "comments": [
           {
-            "id": 2,
+            "id": "2",
             "createdAt": "Sat January 1 2021 23:55:33 GMT+0100 (Central European Summer Time)",
             "text": "User 0 reply to user 1",
-            "user": 0,
+            "user": "0",
             "comments": []
           }
         ]
@@ -23,10 +23,10 @@
     ]
   },
   {
-    "id": 3,
+    "id": "3",
     "createdAt": "Sat January 1 2021 22:40:33 GMT+0100 (Central European Summer Time)",
     "text": "First Comment from user 1",
-    "user": 1,
+    "user": "1",
     "comments": []
   }
 ]

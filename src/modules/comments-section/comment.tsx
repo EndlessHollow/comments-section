@@ -131,6 +131,7 @@ export const Comment: FC<CommentProps> = (props): JSX.Element => {
 
         {isOpen && (
           <Reply
+            commentId={comment.id}
             rows={8}
             minLength={2}
             maxLength={255}

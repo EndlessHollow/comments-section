@@ -1,13 +1,13 @@
 export interface UserData {
-  id: number;
+  id: string;
   username: string;
   avatar: string;
 }
 
 export interface CommentsData {
-  id: number;
-  createdAt: Date;
+  id: string;
+  createdAt: string;
   text: string;
-  user: number;
+  user: string;
   comments: CommentsData[];
 }

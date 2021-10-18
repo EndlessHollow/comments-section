@@ -2,12 +2,14 @@ import React, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
 
 export interface TextAreaProps {
+  value: string | undefined;
   cols?: number;
   rows?: number;
   required?: boolean;
   minLength?: number;
   maxLength?: number;
   placeholder?: string;
+  handleInputChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const TextAreaContainer = styled.div`
@@ -38,14 +40,15 @@ const CharacterCounter = styled.span`
 
 export const TextArea: FC<TextAreaProps> = (props): JSX.Element => {
   const {
+    value,
     cols,
     rows,
     required,
     minLength,
     maxLength,
     placeholder = "What are your thoughts...",
+    handleInputChange,
   } = props;
-  const [textAreaValue, setTextAreaValue] = useState<string | undefined>();
   const [charCount, setCharCount] = useState(`0 | ${maxLength}`);
 
   const handleCharLimit = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -57,14 +60,10 @@ export const TextArea: FC<TextAreaProps> = (props): JSX.Element => {
     }
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setTextAreaValue(e.target.value);
-  };
-
   return (
     <TextAreaContainer>
       <StyledTextArea
-        value={textAreaValue}
+        value={value}
         onChange={(event) => {
           handleInputChange(event);
           handleCharLimit(event);
